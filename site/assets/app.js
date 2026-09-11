@@ -14,7 +14,8 @@ function apply(){
   const q=($('#search')?.value||'').trim().toLowerCase(), t=$('#type')?.value||'', p=$('#price')?.value||'';
   const shown=offers.filter(c=>{
     // search_tags and price_mode are filter-only JSON fields and are never rendered in a card.
-    const hay=[c.name,c.tariff,c.description,...(c.search_tags||[])].join(' ').toLowerCase();
+    const tags=Array.isArray(c.search_tags)?c.search_tags:[];
+    const hay=[c.name,c.tariff,c.description,...tags].filter(Boolean).join(' ').toLowerCase();
     const mode=c.price_mode || 'any';
     return (!q||hay.includes(q)) && (!t||(c.types||[]).includes(t)) && (!p||mode===p||mode==='any');
   });
@@ -24,9 +25,9 @@ function apply(){
 async function load(){
   try{
     const r=await fetch('/api/cards',{cache:'no-store',credentials:'same-origin'}); if(!r.ok) throw 0;
-    const doc=await r.json(); offers=Array.isArray(doc)?doc:(doc.offers||[]);
+    const doc=await r.json(); offers=(Array.isArray(doc)?doc:(Array.isArray(doc?.offers)?doc.offers:[])).filter(c=>c && c.active!==false);
   } catch {
-    try { const doc=await (await fetch('/data/offers.json',{cache:'no-store'})).json(); offers=doc.offers||[]; }
+    try { const fr=await fetch('/data/offers.json',{cache:'no-store'}); if(!fr.ok) throw 0; const doc=await fr.json(); offers=(Array.isArray(doc)?doc:(Array.isArray(doc?.offers)?doc.offers:[])).filter(c=>c && c.active!==false); }
     catch { offers=[]; }
   }
   apply();
