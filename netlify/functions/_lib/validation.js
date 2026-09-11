@@ -11,12 +11,17 @@ const validImage = (v) => {
   if (/^data:image\/(?:webp|png|jpeg);base64,[a-z0-9+/=]+$/i.test(s)) return s;
   return "";
 };
+const normalizeTags = (v) => {
+  const raw = Array.isArray(v) ? v : String(v ?? "").split(",");
+  return [...new Set(raw.map(x=>clean(x,80).toLowerCase()).filter(Boolean))].slice(0,30);
+};
 
 export function normalizeCard(c, idFactory) {
   const advertiser = clean(c.advertiser, 220);
   const isAd = c.is_ad === true;
   const erid = clean(c.erid, 160);
   const link = validHttpUrl(c.link);
+  const priceMode = ["zero","paid","any"].includes(c.price_mode) ? c.price_mode : "any";
   const card = {
     id: clean(c.id,120) || idFactory(),
     name: clean(c.name,120), tariff: clean(c.tariff,160), price: clean(c.price,80),
@@ -25,6 +30,8 @@ export function normalizeCard(c, idFactory) {
     link, image: validImage(c.image), partner: clean(c.partner,160),
     admin_note: clean(c.admin_note,1200), sort: Number.isFinite(Number(c.sort)) ? Math.max(-9999, Math.min(9999, Number(c.sort))) : 100,
     active: c.active !== false,
+    price_mode: priceMode,
+    search_tags: normalizeTags(c.search_tags),
     is_ad: isAd,
     advertiser,
     erid
