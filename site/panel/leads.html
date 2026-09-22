@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>Страницы лидов - РКО Выбор</title>
+  <link rel="stylesheet" href="/assets/style.css?v=20260922-claude1">
+  <script src="/panel/leads.js?v=20260922-claude1" defer></script>
+</head>
+<body class="panel-body">
+<section id="loginView" class="panel-login hidden">
+  <div class="login-box">
+    <div class="brand"><span class="brand-mark">Р</span><span>РКО Выбор</span></div>
+    <h1>Вход в панель</h1><p class="muted">Конструктор персональных страниц.</p>
+    <div id="loginError" class="notice error hidden"></div>
+    <form id="loginForm" class="form-grid"><div class="field"><label>Логин</label><input name="login" autocomplete="username" required></div><div class="field"><label>Пароль</label><input name="password" type="password" autocomplete="current-password" required></div><button class="btn btn-primary" type="submit">Войти</button></form>
+  </div>
+</section>
+<section id="panelView" class="panel-main hidden">
+  <div class="panel-tabs"><a class="panel-tab" href="/panel/">Карточки</a><a class="panel-tab active" href="/panel/leads.html">Страницы лидов</a></div>
+  <div class="panel-top"><div><h1>Конструктор страниц</h1><p class="muted">Выбери офферы, при необходимости замени ссылки и получи адрес вида site.ru/никЛида.</p></div><div class="form-actions"><a class="btn btn-soft" href="/" target="_blank">Открыть сайт</a><button id="logout" class="btn btn-soft" type="button">Выйти</button></div></div>
+
+  <div class="builder-shell">
+    <section class="builder-card">
+      <h2>1. Страница</h2>
+      <form id="leadForm" class="form-grid">
+        <div class="field"><label>Ник / адрес страницы</label><input name="slug" maxlength="64" placeholder="например: ivan-23" required><small class="muted">Будет: <span id="slugPreview">site.ru/ivan-23</span></small></div>
+        <div class="field"><label>Заголовок</label><input name="title" maxlength="140" value="Подборка банковских предложений"></div>
+        <div class="field"><label>Подзаголовок</label><textarea name="subtitle" maxlength="360">Мы собрали предложения, которые подходят под вашу задачу. Изучите условия и выберите удобный вариант.</textarea></div>
+        <div class="panel-legal">Страница не индексируется поисковиками. В ней показываются только выбранные офферы. Внутренние поля партнерки и ЦД наружу не выводятся.</div>
+      </form>
+
+      <h2 style="margin-top:24px">2. Выбери офферы</h2>
+      <div class="field"><label>Поиск по офферам</label><input id="offerSearch" placeholder="Банк, тариф, ИП, ООО..."></div>
+      <div id="offerPicker" class="offer-picker"></div>
+    </section>
+
+    <aside class="builder-card builder-summary">
+      <h2>3. Создать страницу</h2>
+      <p class="muted">Ссылку можно заменить только для этой страницы. Основная карточка не изменится.</p>
+      <div id="selectedCount" class="result-count">0 офферов</div>
+      <div id="selectedList" class="selected-list"></div>
+      <div class="form-actions" style="margin-top:16px"><button id="saveLeadPage" class="btn btn-primary" type="button">Создать / обновить</button><button id="clearLeadPage" class="btn btn-soft" type="button">Очистить</button></div>
+      <div id="builderMessage" class="notice hidden" style="margin-top:12px"></div>
+    </aside>
+  </div>
+
+  <section class="builder-card" style="margin-top:18px">
+    <div class="panel-top"><div><h2>Созданные страницы</h2><p class="muted">Открой, скопируй ссылку или загрузи страницу обратно в конструктор.</p></div></div>
+    <div id="leadPagesList" class="lead-pages-list"></div>
+  </section>
+</section>
+</body>
+</html>
