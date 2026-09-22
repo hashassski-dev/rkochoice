@@ -1,4 +1,16 @@
 const $=s=>document.querySelector(s); let csrf='', cards=[];
+const ASSET_IMAGES=[
+  'bank-default.svg',
+  'alfa.svg',
+  'loko.svg',
+  'ozon.svg',
+  'psb.svg',
+  'tochka.svg',
+  'ubrr.svg',
+  'uralsib.svg',
+  'vtb.svg',
+  'hero.svg'
+];
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));
 async function api(url,opt={}){
   opt.credentials='same-origin';
@@ -9,17 +21,46 @@ async function api(url,opt={}){
   if(!r.ok){if(r.status===404)throw new Error('Netlify Functions не запущены. Live Server показывает витрину, но /panel работает через netlify dev или на Netlify.');throw new Error(data.error||'Ошибка запроса')}
   return data;
 }
+function assetPath(name){return `/assets/${name}`}
+function assetNameFromPath(value){
+  const v=String(value||'');
+  const match=v.match(/^\/assets\/([^/?#]+\.svg)$/i);
+  return match?match[1]:'';
+}
+function renderAssetPicker(){
+  const box=$('#assetPicker');
+  if(!box)return;
+  box.innerHTML=ASSET_IMAGES.map(name=>`<button type="button" class="asset-option" data-asset="${esc(name)}" role="radio" aria-checked="false"><img src="${esc(assetPath(name))}" alt=""><span>${esc(name)}</span></button>`).join('');
+}
+function selectAsset(name){
+  const f=$('#cardForm');
+  const valid=ASSET_IMAGES.includes(name)?name:'bank-default.svg';
+  const path=assetPath(valid);
+  f.elements.image.value=path;
+  $('#imagePreview').src=path;
+  $('#selectedAssetName').textContent=valid;
+  document.querySelectorAll('.asset-option').forEach(btn=>{
+    const active=btn.dataset.asset===valid;
+    btn.classList.toggle('selected',active);
+    btn.setAttribute('aria-checked',active?'true':'false');
+  });
+}
+function clearAsset(){
+  const f=$('#cardForm');
+  f.elements.image.value='';
+  $('#imagePreview').src='/assets/bank-default.svg';
+  $('#selectedAssetName').textContent='Без картинки';
+  document.querySelectorAll('.asset-option').forEach(btn=>{btn.classList.remove('selected');btn.setAttribute('aria-checked','false')});
+}
 async function check(){try{const s=await api('/api/session');csrf=s.csrf;$('#loginView').classList.add('hidden');$('#panelView').classList.remove('hidden');await loadCards();}catch{$('#loginView').classList.remove('hidden');$('#panelView').classList.add('hidden')}}
 $('#loginForm').addEventListener('submit',async e=>{e.preventDefault();const f=new FormData(e.currentTarget);try{await api('/api/login',{method:'POST',body:JSON.stringify({login:f.get('login'),password:f.get('password')})});$('#loginError').classList.add('hidden');await check()}catch(err){$('#loginError').textContent=err.message;$('#loginError').classList.remove('hidden')}});
 $('#logout').addEventListener('click',async()=>{await api('/api/logout',{method:'POST'}).catch(()=>{});csrf='';location.reload()});
 async function loadCards(){const doc=await api('/api/admin/cards');cards=Array.isArray(doc)?doc:(doc.offers||[]);renderList()}
 function renderList(){ $('#adminList').innerHTML=[...cards].sort((a,b)=>(a.sort??100)-(b.sort??100)).map(c=>`<div class="admin-item"><img loading="lazy" src="${esc(c.image||'/assets/bank-default.svg')}" alt=""><div><strong>${esc(c.name)} · ${esc(c.tariff)}</strong><div class="admin-meta">${esc(c.price)} · ${(c.types||[]).join(', ')} · ${c.active===false?'скрыта':'активна'}${c.is_ad?' · реклама':''}</div><div class="admin-meta">${esc(c.partner||'')}</div><div class="admin-meta">Ссылка: ${c.link?esc(c.link):'не задана'}</div><div class="admin-note">${esc(c.admin_note||'')}</div>${c.is_ad?`<div class="admin-meta">Рекламодатель: ${esc(c.advertiser||'не указан')} ${c.erid?`· erid: ${esc(c.erid)}`:''}</div>`:''}</div><div class="admin-actions"><button class="btn btn-soft" data-edit="${esc(c.id)}">Изменить</button><button class="btn btn-danger" data-del="${esc(c.id)}">Удалить</button></div></div>`).join('') }
 $('#adminList').addEventListener('click',async e=>{const edit=e.target.dataset.edit,del=e.target.dataset.del;if(edit){const c=cards.find(x=>x.id===edit);fill(c)}if(del&&confirm('Удалить карточку?')){await api('/api/admin/cards',{method:'DELETE',body:JSON.stringify({id:del})});await loadCards()}});
-function fill(c){const f=$('#cardForm');['id','name','tariff','price','description','details','link','partner','admin_note','sort','image','advertiser','erid','price_mode','search_tags'].forEach(k=>{if(f.elements[k])f.elements[k].value=k==='search_tags'?(c.search_tags||[]).join(', '):(c[k]??'')});f.elements.type_ip.checked=(c.types||[]).includes('ИП');f.elements.type_ooo.checked=(c.types||[]).includes('ООО');f.elements.active.checked=c.active!==false;f.elements.is_ad.checked=c.is_ad===true;$('#imagePreview').src=c.image||'/assets/bank-default.svg';$('#formMode').textContent='Редактирование';$('#cancelEdit').classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'})}
-function resetForm(){const f=$('#cardForm');f.reset();f.elements.id.value='';f.elements.sort.value='100';f.elements.type_ip.checked=true;f.elements.type_ooo.checked=true;f.elements.active.checked=true;f.elements.is_ad.checked=false;f.elements.price_mode.value='any';f.elements.image.value='';$('#imagePreview').src='/assets/bank-default.svg';$('#formMode').textContent='Новая карточка';$('#cancelEdit').classList.add('hidden')}
-$('#cancelEdit').addEventListener('click',resetForm);$('#clearImage').addEventListener('click',()=>{$('#cardForm').elements.image.value='';$('#imagePreview').src='/assets/bank-default.svg'});
-$('#imageFile').addEventListener('change',async e=>{const file=e.target.files[0];if(!file)return;if(!['image/png','image/jpeg','image/webp'].includes(file.type)){alert('Разрешены только PNG, JPEG и WebP');e.target.value='';return}if(file.size>5*1024*1024){alert('Файл слишком большой. Максимум 5 МБ.');e.target.value='';return}try{const data=await compress(file);$('#cardForm').elements.image.value=data;$('#imagePreview').src=data}catch{alert('Не удалось обработать изображение')}});
-function compress(file){return new Promise((resolve,reject)=>{const img=new Image(),url=URL.createObjectURL(file);img.onload=()=>{const maxW=700,maxH=360,scale=Math.min(1,maxW/img.width,maxH/img.height),canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(img.width*scale));canvas.height=Math.max(1,Math.round(img.height*scale));canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);URL.revokeObjectURL(url);resolve(canvas.toDataURL('image/webp',.82))};img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error('bad image'))};img.src=url})}
+function fill(c){const f=$('#cardForm');['id','name','tariff','price','description','details','link','partner','admin_note','sort','image','advertiser','erid','price_mode','search_tags'].forEach(k=>{if(f.elements[k])f.elements[k].value=k==='search_tags'?(c.search_tags||[]).join(', '):(c[k]??'')});f.elements.type_ip.checked=(c.types||[]).includes('ИП');f.elements.type_ooo.checked=(c.types||[]).includes('ООО');f.elements.active.checked=c.active!==false;f.elements.is_ad.checked=c.is_ad===true;const asset=assetNameFromPath(c.image);if(asset&&ASSET_IMAGES.includes(asset)){selectAsset(asset)}else if(c.image){f.elements.image.value=c.image;$('#imagePreview').src=c.image;$('#selectedAssetName').textContent='Текущая картинка'}else{clearAsset()}$('#formMode').textContent='Редактирование';$('#cancelEdit').classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'})}
+function resetForm(){const f=$('#cardForm');f.reset();f.elements.id.value='';f.elements.sort.value='100';f.elements.type_ip.checked=true;f.elements.type_ooo.checked=true;f.elements.active.checked=true;f.elements.is_ad.checked=false;f.elements.price_mode.value='any';selectAsset('bank-default.svg');$('#formMode').textContent='Новая карточка';$('#cancelEdit').classList.add('hidden')}
+$('#cancelEdit').addEventListener('click',resetForm);$('#clearImage').addEventListener('click',clearAsset);$('#assetPicker').addEventListener('click',e=>{const btn=e.target.closest('[data-asset]');if(btn)selectAsset(btn.dataset.asset)});
 $('#cardForm').addEventListener('submit',async e=>{
   e.preventDefault();
   const f=e.currentTarget, submit=f.querySelector('button[type="submit"]');
@@ -40,4 +81,4 @@ $('#cardForm').addEventListener('submit',async e=>{
   }catch(err){$('#formMessage').textContent=err.message;$('#formMessage').classList.add('error');$('#formMessage').classList.remove('hidden')}
   finally{submit.disabled=false;submit.textContent='Сохранить'}
 });
-check();
+renderAssetPicker();selectAsset('bank-default.svg');check();
