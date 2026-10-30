@@ -8,7 +8,6 @@ const validImage = (v) => {
   const s = clean(v, 800000);
   if (!s) return "";
   if (/^\/assets\/[a-z0-9_./-]+$/i.test(s)) return s;
-  if (/^\/api\/card-image\?id=[a-f0-9-]{16,80}$/i.test(s)) return s;
   if (/^data:image\/(?:webp|png|jpeg);base64,[a-z0-9+/=]+$/i.test(s)) return s;
   return "";
 };

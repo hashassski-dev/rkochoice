@@ -14,7 +14,7 @@ const DEFAULT_OFFERS = [
       "ИП"
     ],
     "link": "https://rko-group.ru/s/9yTvGtzC",
-    "image": "/assets/alfa.png",
+    "image": "/assets/alfa.svg",
     "partner": "RKOгрупп",
     "admin_note": "Ставка: 14 000 ₽. Альтернатива: 14 000 ₽ в РКОпартнер. ЦД: открытие Р/С после регистрации бизнеса. Примечание: не оплачиваются ОКВЭД 49.32 и 73.11.",
     "sort": 10,
@@ -39,7 +39,7 @@ const DEFAULT_OFFERS = [
       "ИП"
     ],
     "link": "https://banks-market.com/offer/319/4213?utm_source=web&utm_content=ip",
-    "image": "/assets/vtb.png",
+    "image": "/assets/vtb.svg",
     "partner": "РКОпартнер",
     "admin_note": "ЦД: регистрация ИП + открытие РКО. Ставку проверь в ПП перед запуском, так как условия меняются. Важно: клиент должен быть новым для банка и не иметь действующего счета в ВТБ.",
     "sort": 20,
@@ -64,7 +64,7 @@ const DEFAULT_OFFERS = [
       "ИП"
     ],
     "link": "https://rko-group.ru/s/9yTvGtzC",
-    "image": "/assets/alfa.png",
+    "image": "/assets/alfa.svg",
     "partner": "ЛК",
     "admin_note": "Ставка: до 14 000 ₽ по свежему бизнесу до 30 дней. ЦД: открытие Р/С, далее активность по правилам ПП. Перед запуском проверь актуальные ограничения в ЛК.",
     "sort": 30,
@@ -87,7 +87,7 @@ const DEFAULT_OFFERS = [
       "ИП"
     ],
     "link": "",
-    "image": "/assets/psb.png",
+    "image": "/assets/psb.svg",
     "partner": "RKOгрупп",
     "admin_note": "Ставка: 11 000 ₽ в RKOгрупп, 10 500 ₽ в РКОпартнер, 10 000 ₽ в БС. ЦД: открытие Р/С на тарифе Мини. По РКОпартнер дополнительно отмечено условие - платежка 1 000 ₽.",
     "sort": 40,
@@ -111,7 +111,7 @@ const DEFAULT_OFFERS = [
       "ИП"
     ],
     "link": "https://banks-market.com/offer/505/4213?utm_source=web",
-    "image": "/assets/tochka.png",
+    "image": "/assets/tochka.svg",
     "partner": "RKO-partner",
     "admin_note": "Ставка: 10 000 ₽ за открытие + активацию. ЦД: открытие счета и активация. Не оплачиваются НПД и тариф Ноль.",
     "sort": 50,
@@ -135,7 +135,7 @@ const DEFAULT_OFFERS = [
       "ИП"
     ],
     "link": "https://banks-market.com/offer/369/4213?utm_source=web",
-    "image": "/assets/ubrr.png",
+    "image": "/assets/ubrr.svg",
     "partner": "FCN / RKO-partner",
     "admin_note": "Ставка: 8 800 ₽ в РКОпартнер. ЦД: расход или приход на 2 000 ₽. Ранее по другой сетке: 3 000 ₽ открытие + 4 500 ₽ активация.",
     "sort": 60,
@@ -159,7 +159,7 @@ const DEFAULT_OFFERS = [
       "ИП"
     ],
     "link": "https://banks-market.com/offer/409/4213?utm_source=web",
-    "image": "/assets/uralsib.png",
+    "image": "/assets/uralsib.svg",
     "partner": "RKO-partner",
     "admin_note": "Ставка: 8 550 ₽ в RKOгрупп или 6 500 ₽ в РКОпартнер, в зависимости от сетки. ЦД: не менее 3 исходящих операций на общую сумму от 30 000 ₽ в течение 60 дней с даты открытия счета.",
     "sort": 70,
@@ -208,7 +208,7 @@ const DEFAULT_OFFERS = [
       "ИП"
     ],
     "link": "https://banks-market.com/offer/317/4213?utm_source=web",
-    "image": "/assets/vtb.png",
+    "image": "/assets/vtb.svg",
     "partner": "RKO-partner",
     "admin_note": "Ставка: 7 000 ₽. ЦД: пополнение счета на 5 500 ₽. По RKOгрупп есть более высокая сетка до 15 000 ₽ на отдельный оффер ВТБ РКО.",
     "sort": 90,
@@ -232,7 +232,7 @@ const DEFAULT_OFFERS = [
       "ООО"
     ],
     "link": "https://banks-market.com/offer/318/4213?utm_source=web&utm_content=ooo",
-    "image": "/assets/vtb.png",
+    "image": "/assets/vtb.svg",
     "partner": "РКОпартнер",
     "admin_note": "ЦД: регистрация ООО + открытие РКО. Проверь актуальную ставку в ПП перед запуском. Новый клиент банка без действующего счета в ВТБ.",
     "sort": 110,
@@ -257,7 +257,7 @@ const DEFAULT_OFFERS = [
       "ООО"
     ],
     "link": "https://banks-market.com/offer/317/4213?utm_source=web",
-    "image": "/assets/vtb.png",
+    "image": "/assets/vtb.svg",
     "partner": "РКОпартнер",
     "admin_note": "ЦД: открытие счета. По ООО ставку проверь в ПП перед запуском, так как сетка может отличаться от ИП.",
     "sort": 120,
@@ -281,7 +281,7 @@ const DEFAULT_OFFERS = [
       "ООО"
     ],
     "link": "https://rko-group.ru/s/9yTvGtzC",
-    "image": "/assets/alfa.png",
+    "image": "/assets/alfa.svg",
     "partner": "RKOгрупп",
     "admin_note": "Ставка: 14 000 ₽. Альтернатива: 14 000 ₽ в РКОпартнер. ЦД: открытие Р/С после регистрации бизнеса. Перед запуском проверь ограничения по категории бизнеса и региону.",
     "sort": 130,
@@ -306,7 +306,7 @@ const DEFAULT_OFFERS = [
       "ООО"
     ],
     "link": "https://banks-market.com/offer/561/4213?utm_source=web",
-    "image": "/assets/loko.png",
+    "image": "/assets/loko.svg",
     "partner": "RKO-partner",
     "admin_note": "Ставка: 10 000 ₽ за открытие + активацию. ЦД: минимум 3 операции на сумму от 30 000 ₽, снятие наличных с бизнес-карты от 300 000 ₽, среднедневной остаток на счете от 100 000 ₽ в течение 30 дней.",
     "sort": 140,
@@ -330,7 +330,7 @@ const DEFAULT_OFFERS = [
       "ООО"
     ],
     "link": "https://rko-group.ru/s/9yTvGtzC",
-    "image": "/assets/alfa.png",
+    "image": "/assets/alfa.svg",
     "partner": "ЛК",
     "admin_note": "Ставка: до 14 000 ₽ по свежему бизнесу до 30 дней. ЦД: открытие Р/С, далее активность по правилам ПП.",
     "sort": 150,
@@ -353,7 +353,7 @@ const DEFAULT_OFFERS = [
       "ООО"
     ],
     "link": "https://banks-market.com/offer/493/4213?utm_source=web",
-    "image": "/assets/psb.png",
+    "image": "/assets/psb.svg",
     "partner": "FCN",
     "admin_note": "ЦД: открытие Р/С на тарифе Мини. По ИП есть ставка до 11 000 ₽, по ООО ставку перед запуском проверь в ПП.",
     "sort": 160,
@@ -426,7 +426,7 @@ const DEFAULT_OFFERS = [
       "ООО"
     ],
     "link": "https://banks-market.com/offer/505/4213?utm_source=web",
-    "image": "/assets/tochka.png",
+    "image": "/assets/tochka.svg",
     "partner": "RKO-partner",
     "admin_note": "Ставка: 10 000 ₽ за открытие + активацию. ЦД: открытие счета и активация. Не оплачиваются НПД и тариф Ноль.",
     "sort": 190,
@@ -450,7 +450,7 @@ const DEFAULT_OFFERS = [
       "ООО"
     ],
     "link": "https://banks-market.com/offer/409/4213?utm_source=web",
-    "image": "/assets/uralsib.png",
+    "image": "/assets/uralsib.svg",
     "partner": "RKO-partner",
     "admin_note": "Ставка: ориентир 8 000 ₽ по тарифу Удобный. По общей сетке Уралсиба встречаются разные выплаты, поэтому перед запуском сверяй конкретную ставку в ПП. ЦД: 3 исходящих операции и оборот от 15 000-30 000 ₽ в зависимости от оффера.",
     "sort": 200,
@@ -473,7 +473,7 @@ const normalizeDocument = (value) => {
 
 export async function loadCardsDocument() {
   try {
-    const store = getStore("rko-puls-showcase");
+    const store = getStore("rko-showcase");
     // New key. If it does not exist, transparently migrate the old `cards` array.
     const doc = await store.get("offers.json", { type: "json" });
     if (doc) return normalizeDocument(doc);
@@ -489,7 +489,7 @@ export async function loadCards() {
 }
 
 export async function saveCards(cards) {
-  const store = getStore("rko-puls-showcase");
+  const store = getStore("rko-showcase");
   const doc = {
     version: 1,
     updated_at: new Date().toISOString(),

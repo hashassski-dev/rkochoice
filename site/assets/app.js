@@ -4,7 +4,7 @@ let offers = [];
 
 const esc = s => String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const safeHttpUrl = s => { try { const u = new URL(String(s || ''), location.origin); return ['http:', 'https:'].includes(u.protocol) ? u.href : ''; } catch { return ''; } };
-const safeImage = s => { const v = String(s || ''); return /^\/assets\/[a-z0-9_./-]+$/i.test(v) || /^\/api\/card-image\?id=[a-f0-9-]{16,80}$/i.test(v) || /^data:image\/(?:webp|png|jpeg);base64,/i.test(v) ? v : '/assets/bank-default.png'; };
+const safeImage = s => { const v = String(s || ''); return /^\/assets\/[a-z0-9_./-]+$/i.test(v) || /^data:image\/(?:webp|png|jpeg);base64,/i.test(v) ? v : '/assets/bank-default.svg'; };
 const textOf = c => [c.name, c.tariff, c.description, c.details, ...(Array.isArray(c.search_tags) ? c.search_tags : [])].filter(Boolean).join(' ').toLowerCase();
 
 function offerKind(c) {
@@ -126,32 +126,4 @@ document.addEventListener('keydown', e => {
     $('#search')?.focus();
   }
 });
-$$('[data-jump-filter]').forEach(btn=>btn.addEventListener('click',()=>{
-  const value=btn.dataset.jumpFilter||'';
-  const el=document.querySelector(`input[name="product"][value="${value}"]`);
-  if(el){el.checked=true;apply();}
-  setTimeout(()=>document.querySelector('#offers')?.scrollIntoView({behavior:'smooth',block:'start'}),20);
-}));
-
 load();
-
-// FAQ accordion: one item open at a time, animated via CSS grid rows.
-document.querySelector('[data-accordion]')?.addEventListener('click', e => {
-  const button = e.target.closest('.faq-question');
-  if (!button) return;
-  const current = button.closest('.faq-item');
-  const accordion = current.parentElement;
-  const willOpen = button.getAttribute('aria-expanded') !== 'true';
-  accordion.querySelectorAll('.faq-item').forEach(item => {
-    const q = item.querySelector('.faq-question');
-    const a = item.querySelector('.faq-answer');
-    item.classList.remove('is-open');
-    q?.setAttribute('aria-expanded', 'false');
-    a?.setAttribute('aria-hidden', 'true');
-  });
-  if (willOpen) {
-    current.classList.add('is-open');
-    button.setAttribute('aria-expanded', 'true');
-    current.querySelector('.faq-answer')?.setAttribute('aria-hidden', 'false');
-  }
-});

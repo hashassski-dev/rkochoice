@@ -6,18 +6,18 @@ let cards = [];
 let lastSavedAt = '';
 
 const ASSET_IMAGES = [
-  'bank-default.png',
-  'alfa.png',
-  'loko.png',
+  'bank-default.svg',
+  'alfa.svg',
+  'loko.svg',
   'ozon.svg',
-  'psb.png',
+  'psb.svg',
   'rshb.svg',
-  'tochka.png',
-  'ubrr.png',
-  'uralsib.png',
-  'vtb.png',
+  'tochka.svg',
+  'ubrr.svg',
+  'uralsib.svg',
+  'vtb.svg',
   'hero.svg',
-  'rko-puls-logo.png'
+  'logo-rko.svg'
 ];
 
 const esc = s => String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
@@ -34,7 +34,7 @@ async function api(url, opt = {}) {
   }
   const data = await r.json().catch(() => ({}));
   if (!r.ok) {
-    if (r.status === 404) throw new Error('API панели не найден (404). Netlify не задеплоил Functions: проверь корень репозитория / Base directory, наличие netlify.toml и папки netlify/functions. Открой /api/health для проверки.');
+    if (r.status === 404) throw new Error('API панели не найден. Нужен netlify dev или опубликованный Netlify.');
     throw new Error(data.error || 'Ошибка запроса');
   }
   return data;
@@ -42,7 +42,7 @@ async function api(url, opt = {}) {
 
 function assetPath(name) { return `/assets/${name}`; }
 function assetNameFromPath(value) {
-  const match = String(value || '').match(/^\/assets\/([^/?#]+\.(?:svg|png|jpe?g|webp))$/i);
+  const match = String(value || '').match(/^\/assets\/([^/?#]+\.svg)$/i);
   return match ? match[1] : '';
 }
 function cardSearchText(c) {
@@ -79,7 +79,7 @@ function renderAssetPicker() {
 }
 function selectAsset(name) {
   const f = $('#cardForm');
-  const valid = ASSET_IMAGES.includes(name) ? name : 'bank-default.png';
+  const valid = ASSET_IMAGES.includes(name) ? name : 'bank-default.svg';
   const path = assetPath(valid);
   f.elements.image.value = path;
   $('#imagePreview').src = path;
@@ -93,90 +93,13 @@ function selectAsset(name) {
 function clearAsset() {
   const f = $('#cardForm');
   f.elements.image.value = '';
-  $('#imagePreview').src = '/assets/bank-default.png';
+  $('#imagePreview').src = '/assets/bank-default.svg';
   $('#selectedAssetName').textContent = 'Без картинки';
   $$('.asset-option').forEach(btn => {
     btn.classList.remove('selected');
     btn.setAttribute('aria-checked', 'false');
   });
 }
-
-async function compressImageFile(file) {
-  const allowed = ['image/png','image/jpeg','image/webp'];
-  if (!allowed.includes(file.type)) throw new Error('Поддерживаются PNG, JPG/JPEG и WebP.');
-  if (file.size > 12 * 1024 * 1024) throw new Error('Исходный файл слишком большой. Максимум 12 МБ.');
-  const bitmap = await createImageBitmap(file);
-  const maxSide = 1400;
-  const scale = Math.min(1, maxSide / Math.max(bitmap.width, bitmap.height));
-  const width = Math.max(1, Math.round(bitmap.width * scale));
-  const height = Math.max(1, Math.round(bitmap.height * scale));
-  const canvas = document.createElement('canvas');
-  canvas.width = width; canvas.height = height;
-  const ctx = canvas.getContext('2d', { alpha: true });
-  ctx.drawImage(bitmap, 0, 0, width, height);
-  bitmap.close?.();
-  let blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/webp', 0.84));
-  if (!blob) blob = await new Promise(resolve => canvas.toBlob(resolve, file.type === 'image/png' ? 'image/png' : 'image/jpeg', 0.86));
-  if (!blob) throw new Error('Не удалось обработать изображение в браузере.');
-  if (blob.size > 2_800_000) {
-    blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/webp', 0.68));
-  }
-  if (!blob || blob.size > 2_800_000) throw new Error('После сжатия файл все еще больше 2.8 МБ. Возьми картинку меньшего размера.');
-  return blob;
-}
-
-async function uploadCardImage(file) {
-  const message = $('#uploadMessage');
-  const progress = $('#uploadProgress');
-  const bar = progress?.querySelector('span');
-  try {
-    if (progress) progress.classList.remove('hidden');
-    if (bar) bar.style.width = '18%';
-    if (message) message.textContent = 'Сжимаю изображение...';
-    const blob = await compressImageFile(file);
-    if (bar) bar.style.width = '48%';
-    if (message) message.textContent = `Отправляю ${(blob.size / 1024).toFixed(0)} КБ на сервер...`;
-    const r = await fetch('/api/admin/image', {
-      method: 'POST',
-      credentials: 'same-origin',
-      headers: { 'X-CSRF-Token': csrf, 'Content-Type': blob.type || 'image/webp' },
-      body: blob
-    });
-    const data = await r.json().catch(() => ({}));
-    if (!r.ok) throw new Error(data.error || `Ошибка загрузки (${r.status})`);
-    if (bar) bar.style.width = '100%';
-    const f = $('#cardForm');
-    f.elements.image.value = data.url;
-    $('#imagePreview').src = data.url;
-    $('#selectedAssetName').textContent = 'Загружено на сервер';
-    $$('.asset-option').forEach(btn => { btn.classList.remove('selected'); btn.setAttribute('aria-checked','false'); });
-    if (message) message.textContent = `Готово · ${(data.size / 1024).toFixed(0)} КБ`;
-    setTimeout(() => { if (progress) progress.classList.add('hidden'); if (bar) bar.style.width = '0'; }, 900);
-  } catch (err) {
-    if (message) message.textContent = err.message;
-    if (progress) progress.classList.add('hidden');
-    if (bar) bar.style.width = '0';
-    throw err;
-  }
-}
-
-$('#imageFile')?.addEventListener('change', async e => {
-  const file = e.target.files?.[0];
-  if (!file) return;
-  try { await uploadCardImage(file); }
-  catch (err) { showNotice($('#formMessage'), err.message, true); }
-  finally { e.target.value = ''; }
-});
-
-const uploadBox = $('#imageUploadBox');
-['dragenter','dragover'].forEach(type => uploadBox?.addEventListener(type, e => { e.preventDefault(); uploadBox.classList.add('dragging'); }));
-['dragleave','drop'].forEach(type => uploadBox?.addEventListener(type, e => { e.preventDefault(); uploadBox.classList.remove('dragging'); }));
-uploadBox?.addEventListener('drop', async e => {
-  const file = e.dataTransfer?.files?.[0];
-  if (!file) return;
-  try { await uploadCardImage(file); }
-  catch (err) { showNotice($('#formMessage'), err.message, true); }
-});
 
 async function check() {
   try {
@@ -185,13 +108,11 @@ async function check() {
     $('#loginView').classList.add('hidden');
     $('#panelView').classList.remove('hidden');
     await loadCards();
-  } catch (err) {
+  } catch {
     $('#loginView').classList.remove('hidden');
     $('#panelView').classList.add('hidden');
-    if (err?.message && /API панели не найден/.test(err.message)) showNotice($('#loginError'), err.message, true);
   }
 }
-
 
 $('#loginForm')?.addEventListener('submit', async e => {
   e.preventDefault();
@@ -258,7 +179,7 @@ function renderList() {
   $('#cardsSummary').textContent = `${list.length} карточек${lastSavedAt ? ` · обновлено ${new Date(lastSavedAt).toLocaleString('ru-RU')}` : ''}`;
   $('#adminList').innerHTML = list.map(c => `
     <div class="admin-item">
-      <img loading="lazy" src="${esc(c.image || '/assets/bank-default.png')}" alt="">
+      <img loading="lazy" src="${esc(c.image || '/assets/bank-default.svg')}" alt="">
       <div>
         <strong>${esc(c.name)} · ${esc(c.tariff)}</strong>
         <div class="admin-meta">${esc(c.price || 'Без цены')} · ${esc(cardTypesLabel(c))} · ${c.active === false ? 'скрыта' : 'активна'}${c.is_ad ? ' · реклама' : ''}</div>
@@ -323,7 +244,7 @@ function resetForm() {
   f.elements.active.checked = true;
   f.elements.is_ad.checked = false;
   f.elements.price_mode.value = 'any';
-  selectAsset('bank-default.png');
+  selectAsset('bank-default.svg');
   $('#formMode').textContent = 'Новая карточка';
   $('#cancelEdit').classList.add('hidden');
 }
@@ -489,5 +410,5 @@ $('#statusFilter')?.addEventListener('change', renderList);
 $('#sortMode')?.addEventListener('change', renderList);
 
 renderAssetPicker();
-selectAsset('bank-default.png');
+selectAsset('bank-default.svg');
 check();

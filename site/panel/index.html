@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow">
   <title>Управление витриной</title>
-  <script src="/assets/theme.js?v=20261027-puls2"></script><link rel="stylesheet" href="/assets/style.css?v=20261027-puls2">
-  <script src="/panel/panel.js?v=20261027-puls2" defer></script>
+  <link rel="stylesheet" href="/assets/style.css?v=20261026-panelfix1">
+  <script src="/panel/panel.js?v=20261026-panelfix1" defer></script>
 </head>
 <body class="panel-body">
 <section id="loginView" class="panel-login">
   <div class="login-box">
-    <div class="brand"><img class="brand-logo brand-logo-wide theme-logo-dark" src="/assets/rko-puls-logo-dark.png" alt="РКО Пульс"><img class="brand-logo brand-logo-wide theme-logo-light" src="/assets/rko-puls-logo.png" alt="РКО Пульс"></div>
+    <div class="brand"><img class="brand-logo" src="/assets/logo-rko.svg" alt=""><span class="brand-wordmark">РКО Выбор</span></div>
     <h1>Вход в панель</h1>
     <p class="muted">Управление карточками витрины.</p>
     <div id="loginError" class="notice error hidden"></div>
@@ -31,22 +31,16 @@
         <strong>Карточка РКО</strong>
         <div id="formMode" class="status">Новая карточка</div>
       </div>
-      <label class="theme-control"><select data-theme-select aria-label="Тема"><option value="system">Система</option><option value="light">Светлая</option><option value="dark">Темная</option></select></label><button id="logout" class="btn btn-soft" type="button">Выйти</button>
+      <button id="logout" class="btn btn-soft" type="button">Выйти</button>
     </div>
 
     <form id="cardForm" class="form-grid">
       <input type="hidden" name="id">
       <div class="field">
-        <label>Картинка карточки</label>
-        <div id="imageUploadBox" class="upload-box">
-          <input id="imageFile" type="file" accept="image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp">
-          <div class="upload-help">Можно PNG, JPG/JPEG или WebP. Перед отправкой браузер автоматически уменьшит слишком большую картинку и сохранит ее на сервере в Netlify Blobs.</div>
-          <div id="uploadProgress" class="upload-progress hidden"><span></span></div>
-          <div id="uploadMessage" class="status"></div>
-        </div>
-        <div class="file-row"><img id="imagePreview" class="preview" src="/assets/bank-default.png" alt="Выбранная картинка"><span id="selectedAssetName" class="status">bank-default.png</span><button id="clearImage" class="btn btn-soft" type="button">Без картинки</button></div>
+        <label>Картинка из assets</label>
+        <div id="assetPicker" class="asset-picker" role="radiogroup" aria-label="Выбор картинки из assets"></div>
+        <div class="file-row"><img id="imagePreview" class="preview" src="/assets/bank-default.svg" alt="Выбранная картинка"><span id="selectedAssetName" class="status">bank-default.svg</span><button id="clearImage" class="btn btn-soft" type="button">Без картинки</button></div>
         <input name="image" type="hidden">
-        <details><summary class="status" style="cursor:pointer">Выбрать встроенный логотип банка</summary><div id="assetPicker" class="asset-picker" role="radiogroup" aria-label="Выбор картинки из assets" style="margin-top:7px"></div></details>
       </div>
       <div class="field"><label>Банк</label><input name="name" required></div>
       <div class="field"><label>Название тарифа</label><input name="tariff" required></div>
