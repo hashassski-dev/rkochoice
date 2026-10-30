@@ -1,8 +1,6 @@
 import { loadCardsDocument } from "./_lib/cards-store.js";
 import { expectedPath } from "./_lib/http.js";
 
-// Only fields required by the public storefront are exposed here.
-// partner/admin_note and other internal CRM fields never leave the admin API.
 const publicOffer = (c) => ({
   id:c.id,
   name:c.name,
@@ -21,13 +19,19 @@ const publicOffer = (c) => ({
   erid:c.is_ad?c.erid||"":""
 });
 
+const compareAlpha = (a, b) => (
+  String(a.name || '').localeCompare(String(b.name || ''), 'ru') ||
+  String(a.tariff || '').localeCompare(String(b.tariff || ''), 'ru') ||
+  String(a.id || '').localeCompare(String(b.id || ''), 'ru')
+);
+
 export default async (req) => {
   if (!expectedPath(req, "/api/cards")) return new Response("Not Found", { status:404 });
   if (req.method !== "GET") return new Response("Method Not Allowed", { status:405 });
   const doc = await loadCardsDocument();
   const offers = doc.offers
     .filter(c => c.active !== false)
-    .sort((a,b)=>(a.sort??100)-(b.sort??100))
+    .sort(compareAlpha)
     .map(publicOffer);
   return Response.json({ version:doc.version, updated_at:doc.updated_at, offers }, {
     headers:{"Cache-Control":"no-store","X-Content-Type-Options":"nosniff"}

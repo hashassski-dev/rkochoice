@@ -1,0 +1,20 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="12" y1="10" x2="118" y2="120" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#071B45"/>
+      <stop offset="0.55" stop-color="#0B56D9"/>
+      <stop offset="1" stop-color="#29A7FF"/>
+    </linearGradient>
+    <linearGradient id="fox" x1="41" y1="35" x2="85" y2="94" gradientUnits="userSpaceOnUse">
+      <stop stop-color="white"/>
+      <stop offset="1" stop-color="#C9E9FF"/>
+    </linearGradient>
+  </defs>
+  <rect x="8" y="8" width="112" height="112" rx="30" fill="url(#bg)"/>
+  <path d="M32 34.5 49.2 45 64 38.5 78.8 45 96 34.5 90.2 65.8 78.5 84.1 64 94 49.5 84.1 37.8 65.8 32 34.5Z" fill="url(#fox)"/>
+  <path d="m32 34.5 17.2 10.6L42 63.5 32 34.5Zm64 0L78.8 45.1 86 63.5l10-29Z" fill="#77C9FF"/>
+  <path d="M42 63.5 56 57l8 8 8-8 14 6.5-7.5 20.6L64 94 49.5 84.1 42 63.5Z" fill="#EAF7FF"/>
+  <path d="m55.5 72.5 8.5 4.7 8.5-4.7L64 84l-8.5-11.5Z" fill="#0B2E6B"/>
+  <circle cx="52" cy="62" r="3" fill="#071B45"/>
+  <circle cx="76" cy="62" r="3" fill="#071B45"/>
+</svg>

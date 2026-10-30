@@ -24,14 +24,24 @@ export default async (req) => {
   if (req.method === "DELETE") {
     const id = String(body.id || "").slice(0,120);
     cards = cards.filter(c => c.id !== id);
+  } else if (body?.replace_all === true && Array.isArray(body.offers)) {
+    try {
+      cards = body.offers.map((item, index) => {
+        try {
+          return normalizeCard(item, () => crypto.randomUUID());
+        } catch (e) {
+          throw Object.assign(new Error(`Карточка ${index + 1}: ${e.message}`), { status: e.status || 400 });
+        }
+      });
+    } catch (e) {
+      return json({ error: e.message }, { status: e.status || 400 });
+    }
   } else {
-    // The panel sends a complete card object. This prevents a missing field
-    // (especially partner link) from being silently lost during an edit.
     let card;
     try { card = normalizeCard(body, () => crypto.randomUUID()); }
     catch(e) { return json({error:e.message},{status:e.status||400}); }
-    const i = cards.findIndex(c=>c.id===card.id);
-    if (i>=0) cards[i] = card; else cards.push(card);
+    const i = cards.findIndex(c => c.id === card.id);
+    if (i >= 0) cards[i] = card; else cards.push(card);
   }
 
   if (cards.length > 250) return json({error:"Слишком много карточек"},{status:400});

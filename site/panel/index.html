@@ -1,8 +1,112 @@
-<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><title>Управление витриной</title><link rel="stylesheet" href="/assets/style.css?v=20260922-claude1"><script src="/panel/panel.js?v=20260922-claude1" defer></script></head>
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Управление витриной</title>
+  <script src="/assets/theme.js?v=20261027-puls2"></script><link rel="stylesheet" href="/assets/style.css?v=20261027-puls2">
+  <script src="/panel/panel.js?v=20261027-puls2" defer></script>
+</head>
 <body class="panel-body">
-<section id="loginView" class="panel-login"><div class="login-box"><div class="brand"><span class="brand-mark">Р</span><span>РКО Выбор</span></div><h1>Вход в панель</h1><p class="muted">Управление карточками витрины.</p><div id="loginError" class="notice error hidden"></div><form id="loginForm" class="form-grid"><div class="field"><label>Логин</label><input name="login" autocomplete="username" required></div><div class="field"><label>Пароль</label><input name="password" type="password" autocomplete="current-password" required></div><button class="btn btn-primary" type="submit">Войти</button></form><p class="auth-note">Сессия хранится в защищенной HttpOnly cookie до 30 дней.</p></div></section>
+<section id="loginView" class="panel-login">
+  <div class="login-box">
+    <div class="brand"><img class="brand-logo brand-logo-wide theme-logo-dark" src="/assets/rko-puls-logo-dark.png" alt="РКО Пульс"><img class="brand-logo brand-logo-wide theme-logo-light" src="/assets/rko-puls-logo.png" alt="РКО Пульс"></div>
+    <h1>Вход в панель</h1>
+    <p class="muted">Управление карточками витрины.</p>
+    <div id="loginError" class="notice error hidden"></div>
+    <form id="loginForm" class="form-grid">
+      <div class="field"><label>Логин</label><input name="login" autocomplete="username" required></div>
+      <div class="field"><label>Пароль</label><input name="password" type="password" autocomplete="current-password" required></div>
+      <button class="btn btn-primary" type="submit">Войти</button>
+    </form>
+    <p class="auth-note">Сессия хранится в защищенной HttpOnly cookie до 30 дней.</p>
+  </div>
+</section>
+
 <section id="panelView" class="panel-shell hidden">
-<aside class="panel-side"><div class="panel-top"><div><strong>Карточка РКО</strong><div id="formMode" class="status">Новая карточка</div></div><button id="logout" class="btn btn-soft" type="button">Выйти</button></div>
-<form id="cardForm" class="form-grid"><input type="hidden" name="id"><div class="field"><label>Картинка из assets</label><div id="assetPicker" class="asset-picker" role="radiogroup" aria-label="Выбор картинки из assets"></div><div class="file-row"><img id="imagePreview" class="preview" src="/assets/bank-default.svg" alt="Выбранная картинка"><span id="selectedAssetName" class="status">bank-default.svg</span><button id="clearImage" class="btn btn-soft" type="button">Без картинки</button></div><input name="image" type="hidden"></div><div class="field"><label>Банк</label><input name="name" required></div><div class="field"><label>Название тарифа</label><input name="tariff" required></div><div class="field"><label>Стоимость тарифа</label><input name="price" placeholder="от 0 ₽/мес."></div><div class="field"><label>Тип цены для фильтра</label><select name="price_mode"><option value="any">Любая</option><option value="zero">Есть 0 ₽</option><option value="paid">Платное</option></select></div><div class="field"><label>Поисковые теги, через запятую</label><input name="search_tags" placeholder="например: регбизнес, старт, ип"></div><div class="field"><label>Краткое описание</label><textarea name="description" maxlength="600"></textarea></div><div class="field"><label>Подробнее</label><textarea name="details" maxlength="2500"></textarea></div><div class="field"><label>Партнерская ссылка</label><input name="link" type="url" placeholder="https://..."></div><div class="field"><label>Партнерка, видно только в панели</label><input name="partner"></div><div class="field"><label>ЦД / заметка, видно только в панели</label><textarea name="admin_note" maxlength="1200"></textarea></div><div class="check-row"><label><input name="is_ad" type="checkbox"> Маркировать как рекламу</label></div><div class="field"><label>Рекламодатель</label><input name="advertiser" maxlength="220" placeholder="Полное наименование банка / рекламодателя"></div><div class="field"><label>erid</label><input name="erid" maxlength="160" placeholder="Только если выдан ОРД"></div><div class="panel-legal">Если карточка является интернет-рекламой, заполните рекламодателя и erid в соответствии с договором и требованиями ОРД. Не придумывайте erid самостоятельно.</div><div class="field"><label>Сортировка</label><input name="sort" type="number" value="100"></div><div class="check-row"><label><input name="type_ip" type="checkbox" checked> ИП</label><label><input name="type_ooo" type="checkbox" checked> ООО</label><label class="toggle"><input name="active" type="checkbox" checked> Активна</label></div><div class="form-actions"><button class="btn btn-primary" type="submit">Сохранить</button><button id="cancelEdit" class="btn btn-soft hidden" type="button">Отменить</button></div><div id="formMessage" class="notice hidden"></div></form></aside>
-<main class="panel-main"><div class="panel-tabs"><a class="panel-tab active" href="/panel/">Карточки</a><a class="panel-tab" href="/panel/leads.html">Страницы лидов</a></div><div class="panel-top"><div><h1>Витрина</h1><p class="muted">Карточки, ссылки и внутренние заметки.</p></div><a class="btn btn-soft" href="/" target="_blank">Открыть сайт</a></div><div id="adminList" class="admin-list"></div></main>
-</section></body></html>
+  <aside class="panel-side">
+    <div class="panel-top">
+      <div>
+        <strong>Карточка РКО</strong>
+        <div id="formMode" class="status">Новая карточка</div>
+      </div>
+      <label class="theme-control"><select data-theme-select aria-label="Тема"><option value="system">Система</option><option value="light">Светлая</option><option value="dark">Темная</option></select></label><button id="logout" class="btn btn-soft" type="button">Выйти</button>
+    </div>
+
+    <form id="cardForm" class="form-grid">
+      <input type="hidden" name="id">
+      <div class="field">
+        <label>Картинка карточки</label>
+        <div id="imageUploadBox" class="upload-box">
+          <input id="imageFile" type="file" accept="image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp">
+          <div class="upload-help">Можно PNG, JPG/JPEG или WebP. Перед отправкой браузер автоматически уменьшит слишком большую картинку и сохранит ее на сервере в Netlify Blobs.</div>
+          <div id="uploadProgress" class="upload-progress hidden"><span></span></div>
+          <div id="uploadMessage" class="status"></div>
+        </div>
+        <div class="file-row"><img id="imagePreview" class="preview" src="/assets/bank-default.png" alt="Выбранная картинка"><span id="selectedAssetName" class="status">bank-default.png</span><button id="clearImage" class="btn btn-soft" type="button">Без картинки</button></div>
+        <input name="image" type="hidden">
+        <details><summary class="status" style="cursor:pointer">Выбрать встроенный логотип банка</summary><div id="assetPicker" class="asset-picker" role="radiogroup" aria-label="Выбор картинки из assets" style="margin-top:7px"></div></details>
+      </div>
+      <div class="field"><label>Банк</label><input name="name" required></div>
+      <div class="field"><label>Название тарифа</label><input name="tariff" required></div>
+      <div class="field"><label>Стоимость тарифа</label><input name="price" placeholder="от 0 ₽/мес."></div>
+      <div class="field"><label>Тип цены для фильтра</label><select name="price_mode"><option value="any">Любая</option><option value="zero">Есть 0 ₽</option><option value="paid">Платное</option></select></div>
+      <div class="field"><label>Поисковые теги, через запятую</label><input name="search_tags" placeholder="например: регбизнес, старт, ип"></div>
+      <div class="field"><label>Краткое описание</label><textarea name="description" maxlength="600"></textarea></div>
+      <div class="field"><label>Подробнее</label><textarea name="details" maxlength="2500"></textarea></div>
+      <div class="field"><label>Партнерская ссылка</label><input name="link" type="url" placeholder="https://..."></div>
+      <div class="field"><label>Партнерка, видно только в панели</label><input name="partner"></div>
+      <div class="field"><label>ЦД / заметка, видно только в панели</label><textarea name="admin_note" maxlength="1200"></textarea></div>
+      <div class="check-row"><label><input name="is_ad" type="checkbox"> Маркировать как рекламу</label></div>
+      <div class="field"><label>Рекламодатель</label><input name="advertiser" maxlength="220" placeholder="Полное наименование банка / рекламодателя"></div>
+      <div class="field"><label>erid</label><input name="erid" maxlength="160" placeholder="Только если выдан ОРД"></div>
+      <div class="panel-legal">Если карточка является интернет-рекламой, заполните рекламодателя и erid в соответствии с договором и требованиями ОРД. Не придумывайте erid самостоятельно.</div>
+      <div class="check-row"><label><input name="type_ip" type="checkbox" checked> ИП</label><label><input name="type_ooo" type="checkbox" checked> ООО</label><label class="toggle"><input name="active" type="checkbox" checked> Активна</label></div>
+      <div class="form-actions"><button class="btn btn-primary" type="submit">Сохранить</button><button id="cancelEdit" class="btn btn-soft hidden" type="button">Отменить</button></div>
+      <div id="formMessage" class="notice hidden"></div>
+    </form>
+  </aside>
+
+  <main class="panel-main">
+    <div class="panel-tabs"><a class="panel-tab active" href="/panel/">Карточки</a><a class="panel-tab" href="/panel/leads.html">Страницы лидов</a></div>
+    <div class="panel-top">
+      <div>
+        <h1>Витрина</h1>
+        <p class="muted">Карточки, ссылки и внутренние заметки.</p>
+      </div>
+      <div class="form-actions">
+        <button id="toggleBulk" class="btn btn-soft" type="button">Режим списком</button>
+        <a class="btn btn-soft" href="/" target="_blank">Открыть сайт</a>
+      </div>
+    </div>
+
+    <section class="admin-toolbar">
+      <div class="field"><label>Поиск</label><input id="cardSearch" type="search" placeholder="Банк, тариф, партнерка, заметка..."></div>
+      <div class="field"><label>Тип</label><select id="typeFilter"><option value="all">Все</option><option value="ip">Только ИП</option><option value="ooo">Только ООО</option><option value="both">ИП и ООО</option></select></div>
+      <div class="field"><label>Статус</label><select id="statusFilter"><option value="all">Все</option><option value="active">Активные</option><option value="hidden">Скрытые</option></select></div>
+      <div class="field"><label>Сортировка</label><select id="sortMode"><option value="name-asc">По алфавиту А-Я</option><option value="name-desc">По алфавиту Я-А</option><option value="updated">Сначала свежие в памяти</option></select></div>
+    </section>
+
+    <div id="cardsSummary" class="result-count">0 карточек</div>
+
+    <section id="bulkView" class="bulk-editor hidden">
+      <div class="panel-top" style="margin-bottom:12px">
+        <div>
+          <h2 style="margin:0;font-size:24px">Редактирование списком</h2>
+          <p class="muted">Все карточки в одном текстовом поле. Каждая карточка разделена строкой --- . Поля description:::, details::: и admin_note::: редактируются как многострочные блоки.</p>
+        </div>
+        <div class="form-actions">
+          <button id="refreshBulk" class="btn btn-soft" type="button">Обновить список</button>
+          <button id="saveBulk" class="btn btn-primary" type="button">Сохранить все</button>
+        </div>
+      </div>
+      <textarea id="bulkEditor" class="bulk-textarea" spellcheck="false"></textarea>
+      <div id="bulkMessage" class="notice hidden" style="margin-top:12px"></div>
+    </section>
+
+    <div id="adminList" class="admin-list"></div>
+  </main>
+</section>
+</body>
+</html>

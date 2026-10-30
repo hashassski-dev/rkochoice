@@ -6,7 +6,7 @@ const emptyDoc = () => ({ version: 1, updated_at: null, pages: [] });
 
 export async function loadLeadPagesDocument() {
   try {
-    const store = getStore("rko-showcase");
+    const store = getStore("rko-puls-showcase");
     const doc = await store.get(KEY, { type: "json" });
     if (doc && Array.isArray(doc.pages)) return doc;
     return emptyDoc();
@@ -16,7 +16,7 @@ export async function loadLeadPagesDocument() {
 }
 
 export async function saveLeadPages(pages) {
-  const store = getStore("rko-showcase");
+  const store = getStore("rko-puls-showcase");
   const doc = { version: 1, updated_at: new Date().toISOString(), pages };
   await store.setJSON(KEY, doc);
   return doc;

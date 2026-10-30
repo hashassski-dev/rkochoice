@@ -23,7 +23,7 @@ npm -v
 
 ## 2. Загрузить проект в GitHub
 
-Создайте новый пустой репозиторий на GitHub, например `foxrko-showcase`.
+Создайте новый пустой репозиторий на GitHub, например `foxfox-finance-showcase`.
 
 В терминале из папки проекта:
 
@@ -32,7 +32,7 @@ git init
 git add .
 git commit -m "Initial FOXRKO showcase"
 git branch -M main
-git remote add origin https://github.com/ВАШ_ЛОГИН/foxrko-showcase.git
+git remote add origin https://github.com/ВАШ_ЛОГИН/foxfox-finance-showcase.git
 git push -u origin main
 ```
 
@@ -44,7 +44,7 @@ git push -u origin main
 2. `Add new project` -> `Import an existing project`.
 3. Выберите GitHub.
 4. Разрешите Netlify доступ к репозиторию.
-5. Выберите `foxrko-showcase`.
+5. Выберите `foxfox-finance-showcase`.
 6. Build command оставьте пустым.
 7. Publish directory уже задан в `netlify.toml`: `site`.
 8. Functions directory уже задан: `netlify/functions`.
@@ -53,7 +53,7 @@ git push -u origin main
 После этого Netlify даст бесплатный адрес вида:
 
 ```text
-https://foxrko-showcase.netlify.app
+https://foxfox-finance-showcase.netlify.app
 ```
 
 ## 4. Настроить секреты админки
